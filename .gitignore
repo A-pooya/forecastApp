@@ -4,7 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.ico
+.md
+package-lock.jason
+package.json
 # testing
 /coverage
 
