@@ -2,10 +2,12 @@ import {locationApi} from "./apis"
 
 const key = "k07BDBtzvnYtHAp6FnGwXvhMxfgDYQzU"
 const baseUrl = "http://dataservice.accuweather.com/locations/v1/cities/search";
-const query = `?apikey=${key}&q=tehran`
+//const query = `?apikey=${key}&q=${city}`
 
 
-export const getLocationApi = ( callback ) => {
+export const getLocationApi = (city="london" , callback ) => {
+const query = `?apikey=${key}&q=${city}`
+console.log(city);
     locationApi().get(query).then(response => {
         
         callback(true , response)

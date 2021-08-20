@@ -19,6 +19,15 @@ export const useStyle = makeStyles({
         color:"#ccc",
         cursor:"pointer"
 
+    },
+    cityInput:{
+        borderRadius:"0.4rem",
+        backgroundColor:"#424242"
+    },
+    TG:{
+        color:"#ccc",
+        marginLeft:"1rem",
+        fontSize:'0.9rem' 
     }
 
 })

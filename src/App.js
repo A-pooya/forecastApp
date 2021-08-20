@@ -4,18 +4,30 @@ import {getForecastApi , postForecastApi}  from "./api/forecastApi";
 import {toast , ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useStyle} from "./style";
+import ShowWeatherStatus from "./components/weatherStatus"
+import { Typography } from '@material-ui/core';
+
 
 const App = () => {
     const classes = useStyle();
 
 const [cityCode , setCityCode] = useState();
+const [forecastData , setForecastData] = useState([]);
+const [inputCity , setinputCity] = useState([]);
+
+const city = (e)=>{
+    console.log(e.target.value);
+    setinputCity(e.target.value);
+}
+console.log(typeof(inputCity));
 
 const handleLocationApi = () => {
-    getLocationApi((isok , data) => {
+    getLocationApi(inputCity ,(isok , data) => {
         if (isok){
         console.log(data.data[0].Key)
         const codeofcity = data.data[0].Key
-        return setCityCode(codeofcity)
+        setCityCode(codeofcity)
+        return setinputCity();
         }
         console.log(data);
     })
@@ -23,11 +35,11 @@ const handleLocationApi = () => {
 
 const handleForecastApi = () => {
     getForecastApi(cityCode,(isok , data) => {
-        const DailyForecasts = data.data.DailyForecasts
-        
         if (isok){
-        postForecastApi(DailyForecasts , (isok , data) => {
-            if(isok){
+        const DailyForecasts = data.data.DailyForecasts
+        setForecastData(DailyForecasts);
+            postForecastApi(DailyForecasts , (isok , data) => {
+                if(isok){
                 return toast.success("your api saved")
             }
             return toast.error("there is a problem in data saving procedure")
@@ -41,10 +53,15 @@ const handleForecastApi = () => {
     return ( 
         <>
             <div className={classes.container}>
+                <div>
                 <button type="submit" className={classes.apiBtn} onClick ={handleLocationApi}>get location Api</button>
+                <input type={"text"} placeholder={"write your city"} className={classes.cityInput} onChange = {city} ></input> 
+                {/* <p className={classes.TG}>in default situation app consider london as city</p>    */}
+                </div>
                 <button type="submit" className={classes.apiBtn} onClick ={handleForecastApi}>get forecast Api </button>
             </div>
-            <ToastContainer/>
+            <ShowWeatherStatus forecastData ={forecastData} ></ShowWeatherStatus>
+            <ToastContainer/> 
         </>
      );
 }
