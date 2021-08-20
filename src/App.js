@@ -13,24 +13,32 @@ const App = () => {
 
 const [cityCode , setCityCode] = useState();
 const [forecastData , setForecastData] = useState([]);
-const [inputCity , setinputCity] = useState([]);
+const [inputCity , setinputCity] = useState();
 
 const city = (e)=>{
-    console.log(e.target.value);
-    setinputCity(e.target.value);
+    
+        console.log(e.target.value);
+        return setinputCity(e.target.value);
 }
-console.log(typeof(inputCity));
+
+
 
 const handleLocationApi = () => {
+    if(inputCity){
     getLocationApi(inputCity ,(isok , data) => {
         if (isok){
         console.log(data.data[0].Key)
         const codeofcity = data.data[0].Key
-        setCityCode(codeofcity)
-        return setinputCity();
+        setCityCode(codeofcity);
+        return setinputCity("");
         }
         console.log(data);
     })
+  }
+    else{
+        toast.warn("please write your city first")
+
+    }
 }
 
 const handleForecastApi = () => {
@@ -55,7 +63,7 @@ const handleForecastApi = () => {
             <div className={classes.container}>
                 <div>
                 <button type="submit" className={classes.apiBtn} onClick ={handleLocationApi}>get location Api</button>
-                <input type={"text"} placeholder={"write your city"} className={classes.cityInput} onChange = {city} ></input> 
+                <input type={"text"} placeholder={"write your city"} className={classes.cityInput} onChange = {city} value={inputCity}></input> 
                 {/* <p className={classes.TG}>in default situation app consider london as city</p>    */}
                 </div>
                 <button type="submit" className={classes.apiBtn} onClick ={handleForecastApi}>get forecast Api </button>
